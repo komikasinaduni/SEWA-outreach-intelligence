@@ -1,6 +1,6 @@
 # SEWA Outreach Intelligence
 
-A Greater Houston business directory for community outreach. The first working slice includes 50 structured preview records, evidence-backed confidence labels, verification states, outreach statuses, filters, and filtered CSV export.
+A Greater Houston business directory for community outreach. The working slice includes source-checked business records, evidence-backed confidence labels, verification states, outreach statuses, filters, and filtered CSV export.
 
 ## Live app
 
@@ -24,4 +24,4 @@ npm run build
 
 The GitHub Actions workflow in `.github/workflows/deploy.yml` builds the static Next.js export and deploys it to GitHub Pages whenever `main` changes.
 
-The current preview records are placeholders for the discovery pipeline. They should be replaced with source-verified public business data before outreach use.
+Fabricated preview records were removed. New records should include a real source URL and independently checked address and phone before entering the outreach-ready dataset.

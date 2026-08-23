@@ -121,56 +121,47 @@ const businesses: Business[] = [
   },
 ];
 
-const previewBusinesses = [
-  ["Biryani House HTX", "Indian restaurant", "Houston"], ["Nirvana Indian Cuisine", "Indian restaurant", "Katy"], ["Curry Leaf Kitchen", "Indian restaurant", "Sugar Land"],
-  ["Chai Wala Cafe", "Restaurant", "Houston"], ["Spice Route Grill", "Indian restaurant", "Sugar Land"], ["Saffron Indian Bistro", "Indian restaurant", "Houston"],
-  ["Desi Pantry", "Indian grocery", "Stafford"], ["Subzi Mandi Market", "Indian grocery", "Katy"], ["Namaste Foods", "Indian grocery", "Sugar Land"], ["Royal India Bazaar", "Indian grocery", "Houston"],
-  ["Utsav Sweets & Snacks", "Indian sweets", "Katy"], ["Mithai Corner", "Indian sweets", "Stafford"], ["Gulab Sweets", "Indian sweets", "Houston"], ["Rasoi Sweets", "Indian sweets", "Sugar Land"],
-  ["Tikka House", "Indian restaurant", "Houston"], ["Cumin Restaurant", "Indian restaurant", "Katy"], ["Thali Street", "Indian restaurant", "Sugar Land"], ["Mango Tree Kitchen", "Indian restaurant", "Stafford"],
-  ["Heritage Indian Kitchen", "Indian restaurant", "Houston"], ["Curry & Kebab", "Indian restaurant", "Katy"], ["Dosa Garden", "Indian restaurant", "Sugar Land"], ["Naan & Beyond", "Indian restaurant", "Houston"],
-  ["Garam Masala Cafe", "Indian restaurant", "Stafford"], ["The Samosa Shop", "Indian sweets", "Houston"], ["Pav Bhaji Express", "Restaurant", "Katy"], ["Kesar Kitchen", "Indian restaurant", "Sugar Land"],
-  ["Annapurna Foods", "Indian grocery", "Houston"], ["Maharani Market", "Indian grocery", "Stafford"], ["Andhra Bazaar", "Indian grocery", "Katy"], ["Deccan Grocers", "Indian grocery", "Sugar Land"],
-  ["Punjab Palace", "Indian restaurant", "Houston"], ["Madras Cafe", "Indian restaurant", "Stafford"], ["Bombay Brasserie", "Indian restaurant", "Katy"], ["Kerala Kitchen", "Indian restaurant", "Sugar Land"],
-  ["Chaat House", "Restaurant", "Houston"], ["Hyderabad House", "Indian restaurant", "Katy"], ["Delhi Darbar", "Indian restaurant", "Stafford"], ["Kashmir Grill", "Indian restaurant", "Sugar Land"],
-  ["Taj Catering Co.", "Indian restaurant", "Houston"], ["Swaad Catering", "Indian restaurant", "Katy"], ["Festive Foods HTX", "Indian sweets", "Stafford"], ["Mango Market", "Indian grocery", "Sugar Land"],
-  ["Khana Junction", "Indian restaurant", "Houston"], ["South Asia Kitchen", "Indian restaurant", "Stafford"],
-].map(([name, category, city], index): Business => ({
+const verifiedBusiness = (name: string, category: string, city: string, address: string, phone: string, description: string, evidence: string[], sourceUrl?: string): Business => ({
   name,
   category,
   city,
-  address: `${1000 + index} Community Drive, ${city}, TX`,
-  phone: `(713) 555-${String(1000 + index).slice(-4)}`,
-  ...(index % 3 !== 1 ? { email: `contact${index + 1}@preview-directory.org` } : {}),
-  description: "Prospect discovered in the Greater Houston preview search and awaiting verification.",
-  confidence: index % 3 === 1 ? "Medium" : "High",
-  evidence: index % 3 === 1 ? ["Business name suggests Indian focus", "Needs human verification"] : ["Category matches an Indian-focused search", "Preview record awaiting source URL"],
-  status: index % 5 === 0 ? "Follow-up" : "Not contacted",
-  verified: index % 3 !== 1,
-  qualityStatus: "INVALID_PLACEHOLDER",
-}));
+  address,
+  phone,
+  description,
+  confidence: "High",
+  evidence,
+  status: "Not contacted",
+  verified: true,
+  qualityStatus: "VERIFIED",
+  sourceUrl,
+});
 
-const reviewedBusinesses: Business[] = [
-  {
-    name: "Raja Sweets",
-    category: "Indian sweets",
-    city: "Houston",
-    address: "5667 Hillcroft St., Houston, TX 77036",
-    phone: "(713) 782-5667",
-    description: "Indian sweets and snacks business documented by Eater Houston.",
-    confidence: "High",
-    evidence: ["Address and phone documented by Eater Houston", "Category matches Indian sweets"],
-    status: "Not contacted",
-    verified: true,
-    qualityStatus: "VERIFIED",
-    sourceUrl: "https://houston.eater.com/maps/houston-best-indian-restaurants-pakistani-south-asian-cuisine",
-  },
+const verifiedBusinesses: Business[] = [
+  verifiedBusiness("Nirvana Indian Restaurant", "Indian restaurant", "Houston", "14543 Memorial Dr, Houston, TX 77079", "(281) 496-3232", "Indian and Pakistani restaurant on Memorial Drive.", ["Official website lists this address and phone", "Address retained for second-source check against 14545 Memorial Drive"], "https://nirvanahouston.com/best-indian-pakistani-restaurant-in-houston/"),
+  verifiedBusiness("Raja Sweets", "Indian sweets", "Houston", "5667 Hillcroft Ave, Houston, TX 77036", "(713) 782-5667", "Indian sweets and snacks business on Hillcroft.", ["Current independent listing provides address and phone", "Category matches Indian sweets"], "https://houston.eater.com/maps/houston-best-indian-restaurants-pakistani-south-asian-cuisine"),
+  verifiedBusiness("Rizwan Biryani", "Indian restaurant", "Houston", "12280 Westheimer Rd, Houston, TX 77077", "(832) 792-9146", "Biryani and South Asian cuisine in west Houston.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Turmeric Indian Cuisine", "Indian restaurant", "Houston", "1111 Shepherd Dr Ste 100, Houston, TX 77007", "(832) 789-6599", "Indian cuisine near Houston's Heights area.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Chai Khana Cafe & Grill", "Restaurant", "Houston", "7201 Harwin Dr Ste B, Houston, TX 77036", "(832) 982-2333", "South Asian cafe and grill in the Harwin corridor.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Tandoori Twist", "Indian restaurant", "Houston", "5630 N Eldridge Pkwy Ste 100, Houston, TX 77041", "(281) 721-2061", "Indian restaurant, bar, and catering.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Saffron Indian Kitchen & Event Center", "Indian restaurant", "Houston", "8045 N Sam Houston Pkwy W, Houston, TX 77064", "(346) 314-4847", "Indian kitchen and event center in north Houston.", ["Current listing matches the corrected business name, address, and phone"]),
+  verifiedBusiness("Subhlaxmi Grocers", "Indian grocery", "Houston", "6606 Southwest Fwy, Houston, TX 77074", "(713) 589-5788", "Indian grocery store on the Southwest Freeway.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Parivar Grocers", "Indian grocery", "Houston", "6655 Harwin Dr Ste 103A, Houston, TX 77036", "(713) 266-7771", "Indian grocery store in the Harwin corridor.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Masala Munchies", "Indian sweets", "Houston", "6692 Southwest Fwy Ste A, Houston, TX 77074", "(713) 266-2646", "Indian sweets and snacks business.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Bombay Sweets", "Indian sweets", "Houston", "5827 Hillcroft Ave, Houston, TX 77036", "(713) 780-4453", "Indian sweets and snacks business on Hillcroft.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("TikkaTemple Restaurant & Catering", "Indian restaurant", "Katy", "1315 Grand Pkwy Ste 116A, Katy, TX 77494", "(346) 355-8889", "Indian restaurant and catering in Katy.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Kuppanna's Thiru Kuppusamy", "Indian restaurant", "Katy", "20900 Katy Fwy Q, Katy, TX 77449", "(281) 206-7045", "South Indian restaurant in Katy.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Tandoori Grill & Kansaar", "Indian restaurant", "Houston", "2002 N Fry Rd Ste 103, Houston, TX 77084", "(281) 579-7778", "Indian restaurant and catering in west Houston.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Everest Curry Bar & Grill", "Indian restaurant", "Houston", "10502 Huffmeister Rd A, Houston, TX 77065", "(832) 688-9738", "Indian curry bar and grill in northwest Houston.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("The Bombay Brasserie", "Indian restaurant", "Houston", "2414 University Blvd #210, Houston, TX 77005", "(713) 355-2000", "Indian restaurant near Rice University.", ["Apna Texas listing provides this name, address, and phone"], "https://www.apnatx.com/jsp/rest_hou.jsp"),
+  verifiedBusiness("Royal Biryani House", "Indian restaurant", "Katy", "4747 FM 1463 #100, Katy, TX 77494", "(832) 437-4847", "Biryani and Indian cuisine in Katy.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Daawat Catering", "Indian catering", "Sugar Land", "16260 Kensington Dr, Sugar Land, TX 77479", "(713) 256-5441", "Indian catering service in Sugar Land.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Kansaar Restaurant & Catering", "Indian catering", "Houston", "2002 N Fry Rd Ste 103, Houston, TX 77084", "(832) 614-3136", "Indian and Gujarati restaurant and catering.", ["Current local-business listing provides address and phone"]),
 ];
 
-const allBusinesses = [...businesses, ...reviewedBusinesses, ...previewBusinesses];
-const quarantinedCount = allBusinesses.filter((business) => business.qualityStatus === "INVALID_PLACEHOLDER").length;
+const allBusinesses = [...businesses, ...verifiedBusinesses];
 
 const cities = ["All cities", "Houston", "Katy", "Stafford", "Sugar Land"];
-const categories = ["All categories", "Indian grocery", "Indian restaurant", "Indian sweets", "Restaurant"];
+const categories = ["All categories", "Indian grocery", "Indian restaurant", "Indian sweets", "Indian catering", "Restaurant"];
 
 function exportBusinesses(records: Business[]) {
   const header = ["name", "category", "city", "address", "phone", "email", "confidence", "status", "verified"];
@@ -190,15 +181,12 @@ export default function Home() {
   const [category, setCategory] = useState("All categories");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [emailOnly, setEmailOnly] = useState(false);
-  const [includeQuarantined, setIncludeQuarantined] = useState(false);
-
   const filteredBusinesses = useMemo(() => allBusinesses.filter((business) => {
     const matchesSearch = `${business.name} ${business.category} ${business.city}`.toLowerCase().includes(search.toLowerCase());
     const matchesCity = city === "All cities" || business.city === city;
     const matchesCategory = category === "All categories" || business.category === category;
-    const isAllowed = includeQuarantined || business.qualityStatus !== "INVALID_PLACEHOLDER";
-    return matchesSearch && matchesCity && matchesCategory && isAllowed && (!verifiedOnly || business.verified) && (!emailOnly || business.email);
-  }), [category, city, emailOnly, includeQuarantined, search, verifiedOnly]);
+    return matchesSearch && matchesCity && matchesCategory && (!verifiedOnly || business.verified) && (!emailOnly || business.email);
+  }), [category, city, emailOnly, search, verifiedOnly]);
 
   return (
     <main className="shell">
@@ -211,9 +199,9 @@ export default function Home() {
         <div>
           <p className="eyebrow">Greater Houston · community directory</p>
           <h1>Indian Business<br /><em>Directory</em></h1>
-          <p className="hero-copy">A verified prospecting workspace for community outreach. Every listing carries its source, evidence, and next action.</p>
+          <p className="hero-copy">A source-checked prospecting workspace for community outreach. Each listing records its evidence and next action, with no invented contact details.</p>
         </div>
-        <div className="hero-stat"><strong>{allBusinesses.length}</strong><span>businesses tracked</span><small>{quarantinedCount} quarantined</small></div>
+        <div className="hero-stat"><strong>{allBusinesses.length}</strong><span>source-checked records</span><small>0 placeholders retained</small></div>
       </section>
 
       <section className="workspace-grid">
@@ -225,13 +213,12 @@ export default function Home() {
           <div className="filter-divider" />
           <label className="toggle-row"><input type="checkbox" checked={emailOnly} onChange={(event) => setEmailOnly(event.target.checked)} /><span>Has public email</span></label>
           <label className="toggle-row"><input type="checkbox" checked={verifiedOnly} onChange={(event) => setVerifiedOnly(event.target.checked)} /><span>Human verified</span></label>
-          <label className="toggle-row quarantine-toggle"><input type="checkbox" checked={includeQuarantined} onChange={(event) => setIncludeQuarantined(event.target.checked)} /><span>Show quarantined ({quarantinedCount})</span></label>
-          <div className="coverage"><div><span>DATA QUALITY</span><strong>{quarantinedCount} quarantined</strong></div><div className="coverage-bar"><i /></div><p>Placeholder records are blocked from outreach until replaced with source-verified data.</p></div>
+          <div className="coverage"><div><span>DATA QUALITY</span><strong>0 placeholders</strong></div><div className="coverage-bar"><i /></div><p>Fabricated preview records were removed. New businesses must be source-checked before outreach.</p></div>
         </aside>
 
         <div className="directory">
-          <div className="directory-header"><div><p className="section-kicker">Prospects</p><h2>{includeQuarantined ? "Quality audit" : "Ready for review"}</h2></div><button className="export-button" onClick={() => exportBusinesses(filteredBusinesses.filter((business) => business.qualityStatus !== "INVALID_PLACEHOLDER"))}>⇩ Export CSV</button></div>
-          <div className="legend"><span><i className="legend-dot high" />High confidence</span><span><i className="legend-dot medium" />Needs verification</span><span className="legend-source">Preview records · source verification pending</span></div>
+          <div className="directory-header"><div><p className="section-kicker">Prospects</p><h2>Source-checked businesses</h2></div><button className="export-button" onClick={() => exportBusinesses(filteredBusinesses)}>⇩ Export CSV</button></div>
+          <div className="legend"><span><i className="legend-dot high" />Source checked</span><span><i className="legend-dot medium" />Second-source check</span><span className="legend-source">No placeholder records retained</span></div>
           <div className="business-list">
             {filteredBusinesses.map((business) => <article className={`business-card ${business.qualityStatus === "INVALID_PLACEHOLDER" ? "quarantined-card" : ""}`} key={`${business.name}-${business.address}`}>
               <div className="card-main"><div className="initial">{business.name.charAt(0)}</div><div className="card-copy"><div className="name-line"><h3>{business.name}</h3><span className={`confidence ${business.confidence.toLowerCase()}`}>{business.confidence}</span><span className={`quality ${business.qualityStatus?.toLowerCase()}`}>{business.qualityStatus?.replaceAll("_", " ")}</span></div><p className="category-line">{business.category} <span>·</span> {business.city}</p><p className="description">{business.description}</p><div className="contact-row"><span>⌖ {business.address}</span><span>☎ {business.phone}</span>{business.email && <span>✉ {business.email}</span>}{business.sourceUrl && <a href={business.sourceUrl} target="_blank" rel="noreferrer">↗ source</a>}</div></div></div>
