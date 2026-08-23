@@ -93,6 +93,19 @@ const businesses: Business[] = [
     sourceUrl: "https://www.desidistrict.com/locations/houston",
   },
   {
+    name: "Masala Wok Indian + Asian Fare",
+    category: "Indian restaurant",
+    city: "Houston",
+    address: "10001 Westheimer Rd, Ste 1060, Houston, TX 77042",
+    phone: "(713) 784-8812",
+    description: "Indian and Asian fare at the verified Westheimer location.",
+    confidence: "High",
+    evidence: ["Current listing provides the Westheimer address and phone", "City corrected from Katy to Houston"],
+    status: "Not contacted",
+    verified: true,
+    qualityStatus: "VERIFIED",
+  },
+  {
     name: "Aga's Restaurant & Catering",
     category: "Indian restaurant",
     city: "Houston",
@@ -110,7 +123,7 @@ const businesses: Business[] = [
 
 const previewBusinesses = [
   ["Biryani House HTX", "Indian restaurant", "Houston"], ["Nirvana Indian Cuisine", "Indian restaurant", "Katy"], ["Curry Leaf Kitchen", "Indian restaurant", "Sugar Land"],
-  ["Chai Wala Cafe", "Restaurant", "Houston"], ["Masala Wok", "Indian restaurant", "Katy"], ["Spice Route Grill", "Indian restaurant", "Sugar Land"], ["Saffron Indian Bistro", "Indian restaurant", "Houston"],
+  ["Chai Wala Cafe", "Restaurant", "Houston"], ["Spice Route Grill", "Indian restaurant", "Sugar Land"], ["Saffron Indian Bistro", "Indian restaurant", "Houston"],
   ["Desi Pantry", "Indian grocery", "Stafford"], ["Subzi Mandi Market", "Indian grocery", "Katy"], ["Namaste Foods", "Indian grocery", "Sugar Land"], ["Royal India Bazaar", "Indian grocery", "Houston"],
   ["Utsav Sweets & Snacks", "Indian sweets", "Katy"], ["Mithai Corner", "Indian sweets", "Stafford"], ["Gulab Sweets", "Indian sweets", "Houston"], ["Rasoi Sweets", "Indian sweets", "Sugar Land"],
   ["Tikka House", "Indian restaurant", "Houston"], ["Cumin Restaurant", "Indian restaurant", "Katy"], ["Thali Street", "Indian restaurant", "Sugar Land"], ["Mango Tree Kitchen", "Indian restaurant", "Stafford"],
