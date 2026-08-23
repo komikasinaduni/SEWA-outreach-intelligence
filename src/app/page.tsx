@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 
 type Confidence = "High" | "Medium";
-type QualityStatus = "VERIFIED" | "NEEDS_VERIFICATION" | "INVALID_PLACEHOLDER" | "DUPLICATE";
+type QualityStatus = "VERIFIED" | "NEEDS_VERIFICATION" | "INVALID_PLACEHOLDER" | "DUPLICATE" | "NEEDS_REDISCOVERY";
 
 type Business = {
   name: string;
@@ -80,30 +80,31 @@ const businesses: Business[] = [
   },
   {
     name: "Desi District",
-    category: "Restaurant",
-    city: "Katy",
-    address: "1425 South Mason Road, Katy, TX",
-    phone: "(832) 437-1515",
-    description: "Contemporary Indian dining and private event space in west Houston.",
-    confidence: "Medium",
-    evidence: ["Name and menu reference regional Indian cuisine", "Needs human verification"],
+    category: "Indian restaurant",
+    city: "Houston",
+    address: "11129 Westheimer Rd, Houston, TX 77042",
+    phone: "(346) 681-3374",
+    description: "Indian street food and contemporary South Asian dining in Houston.",
+    confidence: "High",
+    evidence: ["Address and phone listed by Desi District's official Houston page", "Location is inside Greater Houston"],
     status: "Not contacted",
-    verified: false,
-    qualityStatus: "INVALID_PLACEHOLDER",
+    verified: true,
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://www.desidistrict.com/locations/houston",
   },
   {
-    name: "Maharaja Sweets",
-    category: "Indian sweets",
+    name: "Aga's Restaurant & Catering",
+    category: "Indian restaurant",
     city: "Houston",
-    address: "5901 Hillcroft Avenue, Houston, TX",
-    phone: "(713) 781-1111",
-    email: "orders@maharajasweets.com",
-    description: "Traditional Indian sweets, snacks, and festival orders.",
+    address: "11842 Wilcrest Dr, Houston, TX 77031",
+    phone: "(832) 786-8000",
+    description: "Indian and Pakistani cuisine with banquet and catering services.",
     confidence: "High",
-    evidence: ["Website describes Indian sweets and snacks", "Located in Hillcroft community corridor"],
-    status: "Interested",
+    evidence: ["Address and phone listed by Aga's official Houston page", "Houston tourism listing independently matches"],
+    status: "Not contacted",
     verified: true,
-    qualityStatus: "INVALID_PLACEHOLDER",
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://www.agasrestaurant.com/houston",
   },
 ];
 
@@ -136,32 +137,6 @@ const previewBusinesses = [
 }));
 
 const reviewedBusinesses: Business[] = [
-  {
-    name: "Aga's Restaurant & Catering",
-    category: "Indian restaurant",
-    city: "Houston",
-    address: "Address requires verification",
-    phone: "Phone requires verification",
-    description: "Listing retained for human verification before outreach.",
-    confidence: "Medium",
-    evidence: ["Existing details conflicted with current source checks", "Do not contact until address and phone are verified"],
-    status: "Not contacted",
-    verified: false,
-    qualityStatus: "NEEDS_VERIFICATION",
-  },
-  {
-    name: "Masala Wok",
-    category: "Indian restaurant",
-    city: "Katy",
-    address: "Location requires verification",
-    phone: "Phone requires verification",
-    description: "Real business name found, but this location needs verification before outreach.",
-    confidence: "Medium",
-    evidence: ["Historical Katy listing exists", "Current location and phone require verification"],
-    status: "Not contacted",
-    verified: false,
-    qualityStatus: "NEEDS_VERIFICATION",
-  },
   {
     name: "Raja Sweets",
     category: "Indian sweets",
