@@ -108,7 +108,7 @@ const businesses: Business[] = [
 ];
 
 const previewBusinesses = [
-  ["Biryani House HTX", "Indian restaurant", "Houston"], ["Nirvana Indian Cuisine", "Indian restaurant", "Katy"], ["Curry Leaf Kitchen", "Indian restaurant", "Sugar Land"], ["Tandoori Flame", "Indian restaurant", "Stafford"],
+  ["Biryani House HTX", "Indian restaurant", "Houston"], ["Nirvana Indian Cuisine", "Indian restaurant", "Katy"], ["Curry Leaf Kitchen", "Indian restaurant", "Sugar Land"],
   ["Chai Wala Cafe", "Restaurant", "Houston"], ["Masala Wok", "Indian restaurant", "Katy"], ["Spice Route Grill", "Indian restaurant", "Sugar Land"], ["Saffron Indian Bistro", "Indian restaurant", "Houston"],
   ["Desi Pantry", "Indian grocery", "Stafford"], ["Subzi Mandi Market", "Indian grocery", "Katy"], ["Namaste Foods", "Indian grocery", "Sugar Land"], ["Royal India Bazaar", "Indian grocery", "Houston"],
   ["Utsav Sweets & Snacks", "Indian sweets", "Katy"], ["Mithai Corner", "Indian sweets", "Stafford"], ["Gulab Sweets", "Indian sweets", "Houston"], ["Rasoi Sweets", "Indian sweets", "Sugar Land"],
