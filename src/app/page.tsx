@@ -127,7 +127,7 @@ const businesses: Business[] = [
   },
 ];
 
-const verifiedBusiness = (name: string, category: string, city: string, address: string, phone: string, description: string, evidence: string[], sourceUrl?: string, email?: string, qualityStatus: QualityStatus = "VERIFIED"): Business => ({
+const verifiedBusiness = (name: string, category: string, city: string, address: string, phone: string, description: string, evidence: string[], sourceUrl?: string, email?: string, qualityStatus: QualityStatus = sourceUrl ? "VERIFIED" : "SOURCE_CHECKED"): Business => ({
   name,
   category,
   city,
@@ -146,8 +146,8 @@ const verifiedBusiness = (name: string, category: string, city: string, address:
 
 const verifiedBusinesses: Business[] = [
   verifiedBusiness("Nirvana Indian Restaurant", "Indian restaurant", "Houston", "14543 Memorial Dr, Houston, TX 77079", "(281) 496-3232", "Indian and Pakistani restaurant on Memorial Drive.", ["Official website lists this address and phone", "Address retained for second-source check against 14545 Memorial Drive"], "https://nirvanahouston.com/best-indian-pakistani-restaurant-in-houston/"),
-  verifiedBusiness("Raja Sweets", "Indian sweets", "Houston", "5667 Hillcroft Ave, Houston, TX 77036", "(713) 782-5667", "Indian sweets and snacks business on Hillcroft.", ["Current independent listing provides address and phone", "Category matches Indian sweets"], "https://houston.eater.com/maps/houston-best-indian-restaurants-pakistani-south-asian-cuisine"),
-  verifiedBusiness("Rizwan Biryani", "Indian restaurant", "Houston", "12280 Westheimer Rd, Houston, TX 77077", "(832) 792-9146", "Biryani and South Asian cuisine in west Houston.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Raja Sweets", "Indian sweets", "Houston", "5667 Hillcroft Ave, Houston, TX 77036", "(713) 782-5667", "Indian sweets and snacks business on Hillcroft.", ["Raja Sweets site publishes the address, phone, and public catering email", "Category matches Indian sweets"], "https://rajasweets.co/about-us/", "raja.sweets@yahoo.com"),
+  verifiedBusiness("Rizwan's Biryani", "Indian restaurant", "Houston", "6678 S Texas 6, Houston, TX 77083", "(832) 792-9146", "Biryani and South Asian cuisine in Houston.", ["Official website publishes the current address and phone"], "https://rizwansbiryani.com/"),
   verifiedBusiness("Turmeric Indian Cuisine", "Indian restaurant", "Houston", "1111 Shepherd Dr Ste 100, Houston, TX 77007", "(832) 789-6599", "Indian cuisine near Houston's Heights area.", ["Current local-business listing provides address and phone"]),
   verifiedBusiness("Chai Khana Cafe & Grill", "Restaurant", "Houston", "7201 Harwin Dr Ste B, Houston, TX 77036", "(832) 982-2333", "South Asian cafe and grill in the Harwin corridor.", ["Current local-business listing provides address and phone"]),
   verifiedBusiness("Tandoori Twist", "Indian restaurant", "Houston", "5630 N Eldridge Pkwy Ste 100, Houston, TX 77041", "(281) 721-2061", "Indian restaurant, bar, and catering.", ["Current local-business listing provides address and phone"]),
@@ -163,7 +163,7 @@ const verifiedBusinesses: Business[] = [
   verifiedBusiness("The Bombay Brasserie", "Indian restaurant", "Houston", "2414 University Blvd #210, Houston, TX 77005", "(713) 355-2000", "Indian restaurant near Rice University.", ["Apna Texas listing provides this name, address, and phone"], "https://www.apnatx.com/jsp/rest_hou.jsp"),
   verifiedBusiness("Royal Biryani House", "Indian restaurant", "Katy", "4747 FM 1463 #100, Katy, TX 77494", "(832) 437-4847", "Biryani and Indian cuisine in Katy.", ["Current local-business listing provides address and phone"]),
   verifiedBusiness("Daawat Catering", "Indian catering", "Sugar Land", "16260 Kensington Dr, Sugar Land, TX 77479", "(713) 256-5441", "Indian catering service in Sugar Land.", ["Current local-business listing provides address and phone"]),
-  verifiedBusiness("Kansaar Restaurant & Catering", "Indian catering", "Houston", "2002 N Fry Rd Ste 103, Houston, TX 77084", "(832) 614-3136", "Indian and Gujarati restaurant and catering.", ["Current local-business listing provides address and phone"]),
+  verifiedBusiness("Kansaar Restaurant & Catering", "Indian catering", "Houston", "2002 N Fry Rd Ste 103, Houston, TX 77084", "(832) 614-3136", "Separate Indian and Gujarati catering operation co-located with Tandoori Grill.", ["Current listing provides a distinct Kansaar name and phone", "Shares an address with Tandoori Grill and should not be merged automatically"]),
 ];
 
 const additionalBusinesses: Business[] = [
@@ -183,7 +183,7 @@ const additionalBusinesses: Business[] = [
   verifiedBusiness("Spice Mantra Indian Cuisine", "Indian restaurant", "Katy", "27131 Cinco Ranch Blvd, Ste 650, Katy, TX 77494", "(281) 665-1988", "Indian cuisine in Katy.", ["Current local-business listing provides address and phone"]),
   verifiedBusiness("Kurry Walah", "Indian catering", "Katy", "1830 S Mason Rd, Ste 165, Katy, TX 77450", "(832) 437-3800", "Indian restaurant and catering in Katy.", ["Current local-business listing provides address and phone"]),
   verifiedBusiness("Neetu's Indian Kitchen", "Indian restaurant", "Katy", "1989 Fry Rd, Katy, TX 77449", "(832) 920-0220", "Indian restaurant in Katy.", ["Current local-business listing provides address and phone"]),
-  verifiedBusiness("Grand Kabab & Biryani", "Indian restaurant", "Katy", "Katy, TX", "(346) 257-4123 / (281) 940-8885", "Indo-Pak restaurant and catering in Katy.", ["Official site publishes current contact numbers; street address needs follow-up"], "https://grandkababandbiryani.com/"),
+  verifiedBusiness("Grand Kabab & Biryani", "Indian restaurant", "Katy", "Katy, TX", "(346) 257-4123 / (281) 940-8885", "Indo-Pak restaurant and catering in Katy.", ["Official site publishes current contact numbers; street address needs follow-up"], "https://grandkababandbiryani.com/", undefined, "SOURCE_CHECKED"),
   verifiedBusiness("Green Bawarchi", "Indian catering", "Fulshear", "4020 FM 1463 Rd, Fulshear, TX 77494", "(832) 437-6358", "Indian and Pakistani restaurant and catering near Katy.", ["Official catering page publishes address, phone, and public email"], "https://www.greenbawarchikaty.com/catering", "contact@greenbawarchikaty.com"),
   verifiedBusiness("Tandoori Hut Indian Restaurant & Catering", "Indian catering", "Houston", "7610 Cherry Park Dr, Ste A, Houston, TX 77095", "(832) 427-6721", "Indian restaurant and catering in northwest Houston.", ["Current business listing provides address and phone"]),
   verifiedBusiness("Naga's South Indian Cuisine", "Indian restaurant", "Houston", "11807 Westheimer Rd #580, Houston, TX 77077", "(346) 635-2024", "South Indian cuisine in west Houston.", ["Current listing provides address and phone; second-source check recommended"], undefined, undefined, "SOURCE_CHECKED"),
@@ -254,6 +254,7 @@ export default function Home() {
         <div className="directory">
           <div className="directory-header"><div><p className="section-kicker">Prospects</p><h2>Source-checked businesses</h2></div><button className="export-button" onClick={() => exportBusinesses(filteredBusinesses)}>⇩ Export CSV</button></div>
           <div className="legend"><span><i className="legend-dot high" />Source checked</span><span><i className="legend-dot medium" />Second-source check</span><span className="legend-source">50 unique records · no placeholders retained</span></div>
+                    <div className="legend"><span><i className="legend-dot high" />Source checked</span><span><i className="legend-dot medium" />Second-source check</span><span className="legend-source">{allBusinesses.length} unique records · no placeholders retained</span></div>
           <div className="business-list">
             {filteredBusinesses.map((business) => <article className={`business-card ${business.qualityStatus === "INVALID_PLACEHOLDER" ? "quarantined-card" : ""}`} key={`${business.name}-${business.address}`}>
               <div className="card-main"><div className="initial">{business.name.charAt(0)}</div><div className="card-copy"><div className="name-line"><h3>{business.name}</h3><span className={`confidence ${business.confidence.toLowerCase()}`}>{business.confidence}</span><span className={`quality ${business.qualityStatus?.toLowerCase()}`}>{business.qualityStatus?.replaceAll("_", " ")}</span></div><p className="category-line">{business.category} <span>·</span> {business.city}</p><p className="description">{business.description}</p><div className="contact-row"><span>⌖ {business.address}</span><span>☎ {business.phone}</span>{business.email ? <span>✉ {business.email}</span> : <span className="email-needed">✉ needs email research</span>}{business.sourceUrl && <a href={business.sourceUrl} target="_blank" rel="noreferrer">↗ source</a>}</div></div></div>
