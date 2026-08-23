@@ -86,13 +86,15 @@ const businesses: Business[] = [
     city: "Houston",
     address: "11129 Westheimer Rd, Houston, TX 77042",
     phone: "(346) 681-3374",
+    email: "desidistrict.merchant@froogal.ai",
+    emailStatus: "PUBLIC_EMAIL_FOUND",
     description: "Indian street food and contemporary South Asian dining in Houston.",
     confidence: "High",
-    evidence: ["Address and phone listed by Desi District's official Houston page", "Location is inside Greater Houston"],
+    evidence: ["Address and phone listed by Desi District's official Houston page", "Email listed on the Desi District Terms page"],
     status: "Not contacted",
     verified: true,
     qualityStatus: "VERIFIED",
-    sourceUrl: "https://www.desidistrict.com/locations/houston",
+    sourceUrl: "https://www.desidistrict.com/terms-conditions",
   },
   {
     name: "Masala Wok Indian + Asian Fare",
@@ -113,6 +115,8 @@ const businesses: Business[] = [
     city: "Houston",
     address: "11842 Wilcrest Dr, Houston, TX 77031",
     phone: "(832) 786-8000",
+    email: "admin@agasrestaurant.com",
+    emailStatus: "PUBLIC_EMAIL_FOUND",
     description: "Indian and Pakistani cuisine with banquet and catering services.",
     confidence: "High",
     evidence: ["Address and phone listed by Aga's official Houston page", "Houston tourism listing independently matches"],
@@ -211,6 +215,7 @@ export default function Home() {
   const [category, setCategory] = useState("All categories");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [emailOnly, setEmailOnly] = useState(false);
+  const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const filteredBusinesses = useMemo(() => allBusinesses.filter((business) => {
     const matchesSearch = `${business.name} ${business.category} ${business.city}`.toLowerCase().includes(search.toLowerCase());
     const matchesCity = city === "All cities" || business.city === city;
@@ -252,13 +257,25 @@ export default function Home() {
           <div className="business-list">
             {filteredBusinesses.map((business) => <article className={`business-card ${business.qualityStatus === "INVALID_PLACEHOLDER" ? "quarantined-card" : ""}`} key={`${business.name}-${business.address}`}>
               <div className="card-main"><div className="initial">{business.name.charAt(0)}</div><div className="card-copy"><div className="name-line"><h3>{business.name}</h3><span className={`confidence ${business.confidence.toLowerCase()}`}>{business.confidence}</span><span className={`quality ${business.qualityStatus?.toLowerCase()}`}>{business.qualityStatus?.replaceAll("_", " ")}</span></div><p className="category-line">{business.category} <span>·</span> {business.city}</p><p className="description">{business.description}</p><div className="contact-row"><span>⌖ {business.address}</span><span>☎ {business.phone}</span>{business.email ? <span>✉ {business.email}</span> : <span className="email-needed">✉ needs email research</span>}{business.sourceUrl && <a href={business.sourceUrl} target="_blank" rel="noreferrer">↗ source</a>}</div></div></div>
-              <div className="card-side"><span className={`status ${business.status.toLowerCase().replace(" ", "-")}`}>{business.status}</span><button className="review-button">Review details <span>→</span></button></div>
+              <div className="card-side"><span className={`status ${business.status.toLowerCase().replace(" ", "-")}`}>{business.status}</span><button className="review-button" onClick={() => setSelectedBusiness(business)}>Review details <span>→</span></button></div>
               <div className="evidence"><span className="evidence-label">WHY THIS MATCHED</span>{business.evidence.map((item) => <span key={item}>✓ {item}</span>)}</div>
             </article>)}
             {filteredBusinesses.length === 0 && <div className="empty-state">No businesses match these filters.</div>}
           </div>
         </div>
       </section>
+      {selectedBusiness && <div className="modal-backdrop" role="presentation" onClick={() => setSelectedBusiness(null)}>
+        <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="details-title" onClick={(event) => event.stopPropagation()}>
+          <button className="modal-close" aria-label="Close details" onClick={() => setSelectedBusiness(null)}>×</button>
+          <p className="section-kicker">Business details</p>
+          <div className="modal-title-row"><h2 id="details-title">{selectedBusiness.name}</h2><span className={`quality ${selectedBusiness.qualityStatus?.toLowerCase()}`}>{selectedBusiness.qualityStatus?.replaceAll("_", " ")}</span></div>
+          <p className="category-line">{selectedBusiness.category} <span>·</span> {selectedBusiness.city}</p>
+          <p className="modal-description">{selectedBusiness.description}</p>
+          <dl className="details-list"><div><dt>Address</dt><dd>{selectedBusiness.address}</dd></div><div><dt>Phone</dt><dd>{selectedBusiness.phone}</dd></div><div><dt>Email</dt><dd>{selectedBusiness.email ?? "Needs email research"}</dd></div><div><dt>Outreach status</dt><dd>{selectedBusiness.status}</dd></div></dl>
+          <div className="modal-evidence"><span className="evidence-label">EVIDENCE</span>{selectedBusiness.evidence.map((item) => <span key={item}>✓ {item}</span>)}</div>
+          {selectedBusiness.sourceUrl && <a className="source-link" href={selectedBusiness.sourceUrl} target="_blank" rel="noreferrer">Open source ↗</a>}
+        </section>
+      </div>}
     </main>
   );
 }
