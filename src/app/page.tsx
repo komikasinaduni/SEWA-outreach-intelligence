@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 type Confidence = "High" | "Medium";
+type QualityStatus = "VERIFIED" | "NEEDS_VERIFICATION" | "INVALID_PLACEHOLDER" | "DUPLICATE";
 
 type Business = {
   name: string;
@@ -16,6 +17,8 @@ type Business = {
   evidence: string[];
   status: "Not contacted" | "Follow-up" | "Interested";
   verified: boolean;
+  qualityStatus?: QualityStatus;
+  sourceUrl?: string;
 };
 
 const businesses: Business[] = [
@@ -23,27 +26,57 @@ const businesses: Business[] = [
     name: "Keemat Grocers",
     category: "Indian grocery",
     city: "Sugar Land",
-    address: "1650 Highway 6, Sugar Land, TX",
-    phone: "(281) 494-2222",
-    email: "hello@keematgrocers.com",
+    address: "3311 Hwy 6 S, Sugar Land, TX 77478",
+    phone: "(281) 313-4343",
     description: "South Asian grocery, fresh produce, sweets, and community staples.",
     confidence: "High",
     evidence: ["Business description identifies an Indian grocery", "Website lists South Asian products"],
     status: "Not contacted",
     verified: true,
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://www.keematgrocers.com/contact-us/",
   },
   {
-    name: "Aga's Restaurant & Catering",
-    category: "Indian restaurant",
-    city: "Stafford",
-    address: "11899 Wilcrest Drive, Houston, TX",
-    phone: "(281) 776-9299",
-    email: "events@agasrestaurant.com",
-    description: "Indian and Pakistani cuisine with banquet and catering services.",
+    name: "Keemat Grocers",
+    category: "Indian grocery",
+    city: "Houston",
+    address: "5601 Hillcroft St., Houston, TX 77036",
+    phone: "(713) 781-2892",
+    description: "Official Keemat Grocers Hillcroft location.",
     confidence: "High",
-    evidence: ["Category: Indian restaurant", "Catering page mentions community events"],
-    status: "Follow-up",
+    evidence: ["Address and phone listed on Keemat's official contact page", "Location is inside Greater Houston"],
+    status: "Not contacted",
     verified: true,
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://www.keematgrocers.com/contact-us/",
+  },
+  {
+    name: "Keemat Grocers",
+    category: "Indian grocery",
+    city: "Houston",
+    address: "6911 FM 1960, Houston, TX 77066",
+    phone: "(281) 377-3347",
+    description: "Official Keemat Grocers FM 1960 location.",
+    confidence: "High",
+    evidence: ["Address and phone listed on Keemat's official contact page", "Location is inside Greater Houston"],
+    status: "Not contacted",
+    verified: true,
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://www.keematgrocers.com/contact-us/",
+  },
+  {
+    name: "Keemat Grocers",
+    category: "Indian grocery",
+    city: "Katy",
+    address: "2133 Mason Road, Katy, TX 77450",
+    phone: "(832) 321-4156",
+    description: "Official Keemat Grocers Katy location.",
+    confidence: "High",
+    evidence: ["Address and phone listed on Keemat's official contact page", "Location is inside Greater Houston"],
+    status: "Not contacted",
+    verified: true,
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://www.keematgrocers.com/contact-us/",
   },
   {
     name: "Desi District",
@@ -56,6 +89,7 @@ const businesses: Business[] = [
     evidence: ["Name and menu reference regional Indian cuisine", "Needs human verification"],
     status: "Not contacted",
     verified: false,
+    qualityStatus: "INVALID_PLACEHOLDER",
   },
   {
     name: "Maharaja Sweets",
@@ -69,6 +103,7 @@ const businesses: Business[] = [
     evidence: ["Website describes Indian sweets and snacks", "Located in Hillcroft community corridor"],
     status: "Interested",
     verified: true,
+    qualityStatus: "INVALID_PLACEHOLDER",
   },
 ];
 
@@ -97,9 +132,54 @@ const previewBusinesses = [
   evidence: index % 3 === 1 ? ["Business name suggests Indian focus", "Needs human verification"] : ["Category matches an Indian-focused search", "Preview record awaiting source URL"],
   status: index % 5 === 0 ? "Follow-up" : "Not contacted",
   verified: index % 3 !== 1,
+  qualityStatus: "INVALID_PLACEHOLDER",
 }));
 
-const allBusinesses = [...businesses, ...previewBusinesses];
+const reviewedBusinesses: Business[] = [
+  {
+    name: "Aga's Restaurant & Catering",
+    category: "Indian restaurant",
+    city: "Houston",
+    address: "Address requires verification",
+    phone: "Phone requires verification",
+    description: "Listing retained for human verification before outreach.",
+    confidence: "Medium",
+    evidence: ["Existing details conflicted with current source checks", "Do not contact until address and phone are verified"],
+    status: "Not contacted",
+    verified: false,
+    qualityStatus: "NEEDS_VERIFICATION",
+  },
+  {
+    name: "Masala Wok",
+    category: "Indian restaurant",
+    city: "Katy",
+    address: "Location requires verification",
+    phone: "Phone requires verification",
+    description: "Real business name found, but this location needs verification before outreach.",
+    confidence: "Medium",
+    evidence: ["Historical Katy listing exists", "Current location and phone require verification"],
+    status: "Not contacted",
+    verified: false,
+    qualityStatus: "NEEDS_VERIFICATION",
+  },
+  {
+    name: "Raja Sweets",
+    category: "Indian sweets",
+    city: "Houston",
+    address: "5667 Hillcroft St., Houston, TX 77036",
+    phone: "(713) 782-5667",
+    description: "Indian sweets and snacks business documented by Eater Houston.",
+    confidence: "High",
+    evidence: ["Address and phone documented by Eater Houston", "Category matches Indian sweets"],
+    status: "Not contacted",
+    verified: true,
+    qualityStatus: "VERIFIED",
+    sourceUrl: "https://houston.eater.com/maps/houston-best-indian-restaurants-pakistani-south-asian-cuisine",
+  },
+];
+
+const allBusinesses = [...businesses, ...reviewedBusinesses, ...previewBusinesses];
+const quarantinedCount = allBusinesses.filter((business) => business.qualityStatus === "INVALID_PLACEHOLDER").length;
 
 const cities = ["All cities", "Houston", "Katy", "Stafford", "Sugar Land"];
 const categories = ["All categories", "Indian grocery", "Indian restaurant", "Indian sweets", "Restaurant"];
@@ -122,13 +202,15 @@ export default function Home() {
   const [category, setCategory] = useState("All categories");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [emailOnly, setEmailOnly] = useState(false);
+  const [includeQuarantined, setIncludeQuarantined] = useState(false);
 
   const filteredBusinesses = useMemo(() => allBusinesses.filter((business) => {
     const matchesSearch = `${business.name} ${business.category} ${business.city}`.toLowerCase().includes(search.toLowerCase());
     const matchesCity = city === "All cities" || business.city === city;
     const matchesCategory = category === "All categories" || business.category === category;
-    return matchesSearch && matchesCity && matchesCategory && (!verifiedOnly || business.verified) && (!emailOnly || business.email);
-  }), [category, city, emailOnly, search, verifiedOnly]);
+    const isAllowed = includeQuarantined || business.qualityStatus !== "INVALID_PLACEHOLDER";
+    return matchesSearch && matchesCity && matchesCategory && isAllowed && (!verifiedOnly || business.verified) && (!emailOnly || business.email);
+  }), [category, city, emailOnly, includeQuarantined, search, verifiedOnly]);
 
   return (
     <main className="shell">
@@ -143,7 +225,7 @@ export default function Home() {
           <h1>Indian Business<br /><em>Directory</em></h1>
           <p className="hero-copy">A verified prospecting workspace for community outreach. Every listing carries its source, evidence, and next action.</p>
         </div>
-        <div className="hero-stat"><strong>{allBusinesses.length}</strong><span>businesses in preview</span><small>46 records added</small></div>
+        <div className="hero-stat"><strong>{allBusinesses.length}</strong><span>businesses tracked</span><small>{quarantinedCount} quarantined</small></div>
       </section>
 
       <section className="workspace-grid">
@@ -155,15 +237,16 @@ export default function Home() {
           <div className="filter-divider" />
           <label className="toggle-row"><input type="checkbox" checked={emailOnly} onChange={(event) => setEmailOnly(event.target.checked)} /><span>Has public email</span></label>
           <label className="toggle-row"><input type="checkbox" checked={verifiedOnly} onChange={(event) => setVerifiedOnly(event.target.checked)} /><span>Human verified</span></label>
-          <div className="coverage"><div><span>DATA COVERAGE</span><strong>68%</strong></div><div className="coverage-bar"><i /></div><p>34 of 50 records have enough information for outreach.</p></div>
+          <label className="toggle-row quarantine-toggle"><input type="checkbox" checked={includeQuarantined} onChange={(event) => setIncludeQuarantined(event.target.checked)} /><span>Show quarantined ({quarantinedCount})</span></label>
+          <div className="coverage"><div><span>DATA QUALITY</span><strong>{quarantinedCount} quarantined</strong></div><div className="coverage-bar"><i /></div><p>Placeholder records are blocked from outreach until replaced with source-verified data.</p></div>
         </aside>
 
         <div className="directory">
-          <div className="directory-header"><div><p className="section-kicker">Prospects</p><h2>Ready for review</h2></div><button className="export-button" onClick={() => exportBusinesses(filteredBusinesses)}>⇩ Export CSV</button></div>
+          <div className="directory-header"><div><p className="section-kicker">Prospects</p><h2>{includeQuarantined ? "Quality audit" : "Ready for review"}</h2></div><button className="export-button" onClick={() => exportBusinesses(filteredBusinesses.filter((business) => business.qualityStatus !== "INVALID_PLACEHOLDER"))}>⇩ Export CSV</button></div>
           <div className="legend"><span><i className="legend-dot high" />High confidence</span><span><i className="legend-dot medium" />Needs verification</span><span className="legend-source">Preview records · source verification pending</span></div>
           <div className="business-list">
-            {filteredBusinesses.map((business) => <article className="business-card" key={business.name}>
-              <div className="card-main"><div className="initial">{business.name.charAt(0)}</div><div className="card-copy"><div className="name-line"><h3>{business.name}</h3><span className={`confidence ${business.confidence.toLowerCase()}`}>{business.confidence}</span></div><p className="category-line">{business.category} <span>·</span> {business.city}</p><p className="description">{business.description}</p><div className="contact-row"><span>⌖ {business.address}</span><span>☎ {business.phone}</span>{business.email && <span>✉ {business.email}</span>}</div></div></div>
+            {filteredBusinesses.map((business) => <article className={`business-card ${business.qualityStatus === "INVALID_PLACEHOLDER" ? "quarantined-card" : ""}`} key={`${business.name}-${business.address}`}>
+              <div className="card-main"><div className="initial">{business.name.charAt(0)}</div><div className="card-copy"><div className="name-line"><h3>{business.name}</h3><span className={`confidence ${business.confidence.toLowerCase()}`}>{business.confidence}</span><span className={`quality ${business.qualityStatus?.toLowerCase()}`}>{business.qualityStatus?.replaceAll("_", " ")}</span></div><p className="category-line">{business.category} <span>·</span> {business.city}</p><p className="description">{business.description}</p><div className="contact-row"><span>⌖ {business.address}</span><span>☎ {business.phone}</span>{business.email && <span>✉ {business.email}</span>}{business.sourceUrl && <a href={business.sourceUrl} target="_blank" rel="noreferrer">↗ source</a>}</div></div></div>
               <div className="card-side"><span className={`status ${business.status.toLowerCase().replace(" ", "-")}`}>{business.status}</span><button className="review-button">Review details <span>→</span></button></div>
               <div className="evidence"><span className="evidence-label">WHY THIS MATCHED</span>{business.evidence.map((item) => <span key={item}>✓ {item}</span>)}</div>
             </article>)}
